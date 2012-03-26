@@ -1,0 +1,59 @@
+
+.defaultStyle {
+	embedFonts:true;
+	font-family:ChaletBook;
+	font-size:11;
+	color:#ffffff;
+	
+	multiline:true;
+	autoSize:left;
+	wordWrap:false;
+	antiAliasType:advanced;
+	gridFitType:subpixel;
+	sharpness:0;
+	thickness:0;
+	selectable:false;
+}
+.fix { font-size:11; }
+
+
+.test {
+	font-size:18;
+	selectable:true;
+	border:true;
+	autoSize:left;
+	/*font-style:italic;*/
+}
+
+.lang_button {
+	font-size:12;
+	color:#262626;
+	autoSize:center;
+	text-align:center;
+	letter-spacing:3;
+	selectable:true;
+}
+
+.lang_button_cn_CN {
+	font-family:_sans;
+	embedFonts:false;
+	font-size:12;
+	color:#262626;
+	autoSize:center;
+	text-align:center;
+	letter-spacing:3;
+}
+
+.main_title {
+	font-weight:bold;
+	font-size:10;
+	color:#ffffff;
+	letter-spacing:3;
+}
+
+.main_title_cn_CN {
+	font-weight:bold;
+	font-size:10;
+	color:#000000;
+	letter-spacing:3;
+}
