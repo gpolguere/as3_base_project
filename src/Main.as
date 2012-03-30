@@ -64,12 +64,12 @@ package
 			
 			_mainTitleTf = new StyledTextField("main_title");
 			_mainTitleTf.htmlText = App.langXML["main_title"].toString();
-			addChild(_mainTitleTf);
+			addChild(_mainTitleTf.asset);
 		}
 		
 		protected function onResize():void
 		{
-			_mainTitleTf.x = (App.stage.stageWidth - _mainTitleTf.width) >> 1;
+			_mainTitleTf.asset.x = (App.stage.stageWidth - _mainTitleTf.asset.width) >> 1;
 		}
 		
 		public function start() : void {

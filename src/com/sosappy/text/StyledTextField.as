@@ -14,19 +14,21 @@ package com.sosappy.text
 			tf.text = "hello";
 			addChild(tf);
 	 */	
-	public class StyledTextField extends TextField
+	public class StyledTextField
 	{
 		static public var globalStyleSheet : StyleSheet;
 		static private var _suffix : String = "";
 		
 		private var _className:String;
 		private var _text:String;
+		private var _asset:TextField;
 		
-		public function StyledTextField(className : String)
+		public function StyledTextField(className : String, asset : TextField = null)
 		{
+			_asset = asset || new TextField();
 			super();
 			if(globalStyleSheet) {
-				this.styleSheet = globalStyleSheet;
+				_asset.styleSheet = globalStyleSheet;
 				var cssClassObj : Object = globalStyleSheet.getStyle("." + className + suffix);
 				if(isEmpty(cssClassObj)) {
 					cssClassObj = globalStyleSheet.getStyle("." + className);
@@ -34,8 +36,8 @@ package com.sosappy.text
 					className += suffix;
 				}
 				for(var key : String in cssClassObj) {
-					if(this.hasOwnProperty(key)) {
-						this[key] = (cssClassObj[key] == "false") ? false : cssClassObj[key];
+					if(_asset.hasOwnProperty(key)) {
+						_asset[key] = (cssClassObj[key] == "false") ? false : cssClassObj[key];
 					}
 				}
 			}
@@ -47,19 +49,19 @@ package com.sosappy.text
 			applyStyle();
 		}
 		
-		override public function set text(t : String) : void {
+		public function set text(t : String) : void {
 			this.htmlText = t;
 			applyStyle();
 		}
 		
-		override public function set htmlText(t : String) : void {
+		public function set htmlText(t : String) : void {
 			_text = t;
 			applyStyle();
 		}
 		
 		private function applyStyle():void
 		{
-			super.htmlText = "<span class=\"" + _className + "\">" + _text + "</span>";
+			_asset.htmlText = "<span class=\"" + _className + "\">" + _text + "</span>";
 		}
 
 		public static function get suffix():String
@@ -73,6 +75,11 @@ package com.sosappy.text
 			if(_suffix.charAt() != "_") {
 				_suffix = "_" + _suffix;
 			}
+		}
+
+		public function get asset():TextField
+		{
+			return _asset;
 		}
 
 

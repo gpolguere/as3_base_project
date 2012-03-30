@@ -5,7 +5,7 @@
 		public var flags:uint;
 		public var interfaces:Array;
 		
-		public function toString() {
+		public function toString() : String {
             return name.toString();
         }
 	}
