@@ -4,11 +4,18 @@ package
 	import com.sosappy.app.IMain;
 	import com.sosappy.text.StyledTextField;
 	import com.sosappy.text.Styles;
+	import com.sosappy.video.VideoController;
+	import com.sosappy.video.VideoControllerEvent;
+	import com.sosappy.video.VideoPlayer;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.text.Font;
 	import flash.text.TextField;
+	
+	import nl.base42.subtitles.SubtitleParser;
 	
 	import utils.object.isEmpty;
 	
@@ -16,6 +23,7 @@ package
 	{
 		private var _onReadyCallback : Function;
 		private var _mainTitleTf:StyledTextField;
+		private var _videoPlayer:VideoPlayer;
 		
 		public function Main()
 		{
@@ -37,6 +45,17 @@ package
 			onResize();
 			
 //			SWFAddress
+			
+			var urlLoader : URLLoader = new URLLoader();
+			urlLoader.addEventListener(Event.COMPLETE, onSRTLoaded);
+			urlLoader.load(new URLRequest("test.srt"));
+		}
+		
+		protected function onSRTLoaded(event:Event):void
+		{
+			var urlLoader : URLLoader = event.target as URLLoader;
+			urlLoader.removeEventListener(Event.COMPLETE, onSRTLoaded);
+			_videoPlayer.srt = SubtitleParser.parseSRT(urlLoader.data);
 			
 			_onReadyCallback();
 		}
@@ -65,6 +84,29 @@ package
 			_mainTitleTf = new StyledTextField("main_title");
 			_mainTitleTf.htmlText = App.langXML["main_title"].toString();
 			addChild(_mainTitleTf.asset);
+			
+			var vc : VideoController = new VideoController();
+//			addChild(vc.container);
+			vc.addEventListener(VideoControllerEvent.PROGRESS, onVideoProgress);
+			vc.addEventListener(VideoControllerEvent.LOADED, onVideoLoaded);
+			vc.loop = true;
+			vc.load("video-01.mp4");
+			vc.pause();
+			vc.setStageVideo(true);
+			
+			_videoPlayer = new VideoPlayer(vc, null, false);
+			addChild(_videoPlayer.container);
+//			vp.fullscreen = true;
+		}
+		
+		protected function onVideoProgress(event:VideoControllerEvent):void
+		{
+			trace(event.ratio);
+		}
+		
+		protected function onVideoLoaded(event:VideoControllerEvent):void
+		{
+			trace("video loaded");
 		}
 		
 		protected function onResize():void
@@ -74,6 +116,8 @@ package
 		
 		public function start() : void {
 			trace("Main.start()");
+			
+			_videoPlayer.videoController.play();
 		}
 	}
 }
